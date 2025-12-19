@@ -19,52 +19,44 @@ interface IngredientCardProps {
 
 export default function IngredientCard({ ingredient, onDrop, onTap, onHoldComplete, onDragStart, onDragEnd }: IngredientCardProps) {
     const [isDragging, setIsDragging] = useState(false);
-    const [holdProgress, setHoldProgress] = useState(0);
-    const holdTimerRef = useRef<NodeJS.Timeout | null>(null);
-    const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
+    const tapTimerRef = useRef<NodeJS.Timeout | null>(null);
     const lastTapTimeRef = useRef<number>(0);
     const { playHover, playGlitch, playSuccess } = useAudio();
     const { theme, discoverLore, loreDiscovered } = useGame();
     const isDiscovered = loreDiscovered.includes(ingredient.id);
 
     const handleTap = () => {
+        if (window.innerWidth >= 768) {
+            // Desktop behavior (Lore on hover, so maybe lore on tap too? 
+            // The user only specified mobile change)
+            onTap(ingredient.id);
+            return;
+        }
+
         const now = Date.now();
         const DOUBLE_TAP_TIMEOUT = 300;
 
         if (now - lastTapTimeRef.current < DOUBLE_TAP_TIMEOUT) {
-            // Double tap detected
+            // Double tap detected -> Show Ancestry Lore
+            if (tapTimerRef.current) clearTimeout(tapTimerRef.current);
             onTap(ingredient.id);
+            lastTapTimeRef.current = 0; // Reset
+        } else {
+            // Potential single tap -> Collect
+            lastTapTimeRef.current = now;
+            tapTimerRef.current = setTimeout(() => {
+                // If it was a single tap, add to basket
+                playSuccess();
+                onHoldComplete?.(ingredient.id); // Reusing onHoldComplete as onSingleTap
+                lastTapTimeRef.current = 0;
+            }, DOUBLE_TAP_TIMEOUT);
         }
-        lastTapTimeRef.current = now;
-    };
-
-    const startHold = () => {
-        if (window.innerWidth >= 768) return; // Only for mobile
-
-        setHoldProgress(0);
-        const startTime = Date.now();
-        const targetDuration = 1500; // User asked for 1.5s
-
-        holdTimerRef.current = setTimeout(() => {
-            playSuccess();
-            onHoldComplete?.(ingredient.id);
-            stopHold();
-        }, targetDuration);
-
-        progressIntervalRef.current = setInterval(() => {
-            const elapsed = Date.now() - startTime;
-            setHoldProgress(Math.min((elapsed / targetDuration) * 100, 100));
-        }, 30);
-    };
-
-    const stopHold = () => {
-        if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
-        if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
-        setHoldProgress(0);
     };
 
     useEffect(() => {
-        return () => stopHold();
+        return () => {
+            if (tapTimerRef.current) clearTimeout(tapTimerRef.current);
+        };
     }, []);
 
     return (
@@ -73,9 +65,6 @@ export default function IngredientCard({ ingredient, onDrop, onTap, onHoldComple
             dragSnapToOrigin
             dragElastic={0.4}
             onTap={handleTap}
-            onPointerDown={startHold}
-            onPointerUp={stopHold}
-            onPointerLeave={stopHold}
             onHoverStart={() => {
                 if (window.innerWidth >= 768) {
                     playHover();
@@ -83,7 +72,7 @@ export default function IngredientCard({ ingredient, onDrop, onTap, onHoldComple
                 }
             }}
             onDragStart={() => {
-                stopHold(); // Stop hold if drag starts
+                if (tapTimerRef.current) clearTimeout(tapTimerRef.current);
                 setIsDragging(true);
                 playGlitch();
                 onDragStart?.();
@@ -102,23 +91,6 @@ export default function IngredientCard({ ingredient, onDrop, onTap, onHoldComple
             className={`expert-card relative cursor-grab active:cursor-grabbing w-24 h-24 md:w-36 md:h-36 lg:w-40 lg:h-40 flex flex-col items-center justify-center rounded-[28px] md:rounded-[40px] transition-all duration-300 ${isDragging ? "drag-proxy scale-110" : ""
                 }`}
         >
-            {/* Hold Progress Ring (Mobile only) */}
-            {holdProgress > 0 && (
-                <svg className="absolute inset-0 w-full h-full -rotate-90 pointer-events-none z-20">
-                    <circle
-                        cx="50%"
-                        cy="50%"
-                        r="45%"
-                        fill="none"
-                        stroke="var(--accent)"
-                        strokeWidth="4"
-                        strokeDasharray="283"
-                        strokeDashoffset={283 - (283 * holdProgress) / 100}
-                        strokeLinecap="round"
-                        className="transition-all duration-100 ease-linear opacity-60"
-                    />
-                </svg>
-            )}
 
             {/* Discovery Ornament */}
             <AnimatePresence>

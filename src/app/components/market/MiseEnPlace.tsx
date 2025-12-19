@@ -110,9 +110,9 @@ export default function MiseEnPlace() {
                             transition={{ delay: 1 }}
                             className="mt-4 md:hidden text-[10px] font-black text-accent/60 uppercase tracking-[0.2em] flex flex-col gap-1 items-center"
                         >
-                            <span>Double Tap for Story</span>
+                            <span>Tap to Collect</span>
                             <span className="opacity-40">•</span>
-                            <span>Hold 1.5s to Collect</span>
+                            <span>Double Tap for Story</span>
                         </motion.div>
                     </motion.div>
 
