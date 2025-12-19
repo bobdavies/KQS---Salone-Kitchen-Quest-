@@ -1,0 +1,21 @@
+# 🥘 RECIPE LOGIC: Cassava Leaf Sauce & Rice
+
+**Source of Truth:** Authentic Sierra Leonean Recipe
+**Context:** This file defines the data structures, timers, ingredient physics, and state transitions for the app.
+
+---
+
+## 📊 Global Metadata
+
+```json
+{
+  "dishName": "Cassava Leaf Stew",
+  "origin": "Sierra Leone",
+  "defaultServings": 8,
+  "prepTime": 15, // minutes
+  "cookTime": 60, // minutes
+  "totalTime": 75, // minutes
+  "difficulty": "Medium",
+  "caloriesPerServing": 429
+}
+🥩 The Game Objects (Ingredients)Use this data to populate the MiseEnPlace (Market) component and the PortionController logic.IDDisplay NameBase QtyUnitTypeAsset RefPhysics BehaviorbeefBeef Cubes1lbSolidimg_beef.pngHeavy, bounce on dropoil_vegVegetable Oil1tbspLiquidimg_oil.pngViscous flowonion_chopChopped Onions2wholeSolidimg_onion.pngScatter particlesmaggiMaggi Stock Cubes2cubesSolidimg_maggi.pngSmall, light dropeggplantGarden Eggs/Eggplant2mediumSolidimg_eggplant.pngHeavy bouncefishSmoked Fish / Crayfish3tbspParticleimg_fish.pngDust/Flake particle effectchiliScotch Bonnet1wholeSolidimg_chili.pngLight bouncep_butterPeanut Butter5tbspSemi-Solidimg_peanutbutter.pngSlow glob (sticky)palm_oilRed Palm Oil0.75cupLiquidimg_palmoil.pngThick liquid (slow flow)cassavaPounded Cassava Leaves1lbSemi-Solidimg_cassava.pngHeavy clumpwaterWater3cupsLiquidimg_water.pngFast flow🎮 Game State Logic (The Cooking Process)The app logic is divided into 5 Active Stages. The GameManager must strictly follow this sequence.STAGE 1: The Beef Base (Intro)Goal: Cook the beef to create the stock.Ingredients Used: Beef, 1 tbsp Onion, 0.25 Maggi Cube, Veg Oil, 1/3 cup Water, Salt.Action: Drag all items into pot.Timer: 25 Minutes (Simmer).Outcome: Creates Beef Stock variable. User must "Reserve" (remove) beef from pot to proceed.STAGE 2: The Blender (High Interaction)Goal: Create the base puree while beef cooks.Ingredients Used: Eggplant, Remaining Onion, Smoked Fish, Chili, 2/3 cup Water.UI Component: VirtualBlender.tsx.Interaction:Drag items into blender jar.Hold Button to blend (Haptic feedback: Heavy Vibration).Visual transformation: Ingredients -> Smooth Brown/Purple Paste.STAGE 3: The Simmer (The "Oil" Phase)Goal: Cook the "raw" taste out of the oil and nuts.Ingredients Used: The Puree (from Stage 2), Remaining Maggi, Peanut Butter, Red Palm Oil.UI Component: SimmerTimer.tsx.Logic:Pour Puree into pot.Add Peanut Butter & Palm Oil.Heat Management: User must adjust slider to "Medium-High".Timer: 30 Minutes.Visual: Bubbling red oil video background.STAGE 4: The Leaves (The Green Phase)Goal: Cook the leaves.Ingredients Used: Pounded Cassava Leaves, Reserved Beef Stock.Action:Add Leaves (Screen turns lush green).Add reserved liquid.Timer: 30 Minutes.STAGE 5: The Reunion (Final Step)Goal: Re-introduce the meat.Trigger: When Stage 4 Timer = "10:00 remaining".Action: Drag Cooked Beef back into the pot.Interaction: Satisfying splash effect.🍚 The Parallel Timeline: RiceLogic: The Rice Timer operates independently of the Sauce Timer.Rule: Rice takes 20 minutes.Notification: The app must alert the user when there are 20 minutes left on the Stage 4 timer: "Start the rice now to finish together!"💡 Sensory Implementation Data for Framer MotionVisual CuesBoiling: When temperature > 80, shake the pot image x: [-1, 1].Steam: Opacity of steam particles maps to temperature state (0 to 1).Palm Oil Warning: If temperature == MAX (High Heat), overlay red vignette pulse opacity: [0, 0.3, 0].Audio Cues (use-sound)sizzle_soft.mp3: Play during Stage 3 (Simmer).blender_motor.mp3: Play only when isBlending === true.splash_liquid.mp3: Play when Water or Oil is added.heavy_thud.mp3: Play when Eggplant or Beef is dropped.Haptic Patterns (navigator.vibrate)Drop: [10] (Short tick)Blend: [50, 20, 50, 20] (Rumbling motor)Timer Finished: [500, 200, 500] (Long alert)🥗 Nutrition Data (For Final Reveal)Calories: 429 kcalProtein: 18gFat: 34gCarbs: 16gVitamins: High in Vitamin A (6675 IU) & C (32mg)

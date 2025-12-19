@@ -1,0 +1,249 @@
+# 🦁 THE CASSAVA LEAF EXPERIENCE: Master Technical Roadmap
+
+**Project Name:** Salone Kitchen: Cassava Leaf Experience
+**Version:** 1.0.0 (Vibe Code Edition)
+**Core Philosophy:** "Feel, don't just read." The app must feel like a physical game, not a website.
+
+---
+
+## 🛠 Tech Stack & Dependencies
+
+| Category | Tool | Purpose |
+| :--- | :--- | :--- |
+| **Framework** | Next.js 14+ (App Router) | Core Application Structure |
+| **Language** | TypeScript | Type Safety for complex state |
+| **Styling** | Tailwind CSS | Utility-first styling |
+| **Animation** | `framer-motion` | **CRITICAL.** All physics & transitions |
+| **UI Lib** | `shadcn/ui` + `radix-ui` | Base components (Slider, Dialog, Progress) |
+| **Audio** | `use-sound` | Sound effects management |
+| **Effects** | `canvas-confetti` | Particle systems for success state |
+| **Icons** | `lucide-react` | Scalable UI icons |
+| **State** | React Context + LocalStorage | Persistence across reloads |
+
+---
+
+## 📂 Target Directory Structure
+
+```text
+/app
+  /components
+    /intro       -> Hero.tsx
+    /market      -> MiseEnPlace.tsx, IngredientCard.tsx
+    /prep        -> VirtualBlender.tsx
+    /cook        -> SimmerTimer.tsx, IngredientDrop.tsx, HeatSlider.tsx
+    /serve       -> GrandReveal.tsx
+    /shared      -> GameManager.tsx, PortionController.tsx, GestureHint.tsx
+  /hooks
+    -> useHaptic.ts
+    -> useWakeLock.ts
+    -> useSoundManager.ts
+  /lib
+    -> constants.ts (Recipe Data)
+    -> utils.ts
+  /public
+    /videos      -> (webm loops)
+    /sounds      -> (mp3 sfx)
+🎨 Phase 1: Foundation & Design System
+Objective: Set up the "Salone" theme and install physics engines.
+
+1.1 Install Dependencies:
+
+Bash
+
+npm install framer-motion use-sound canvas-confetti lucide-react clsx tailwind-merge
+npx shadcn-ui@latest init
+npx shadcn-ui@latest add slider progress button dialog
+1.2 Tailwind Config (tailwind.config.ts): Extend the theme with these specific hex codes:
+
+salone-green: #1EB53A (Primary Action)
+
+salone-white: #F8F9FA (Rice/Background)
+
+salone-blue: #0072C6 (Accents)
+
+palm-oil: #FF4500 (Warning/Heat)
+
+peanut: #D2691E (Secondary)
+
+cassava-dark: #0F3B1A (Text/Dark Mode Bg)
+
+1.3 Global Styles (globals.css):
+
+Enable scroll-behavior: smooth.
+
+Prevent text selection: user-select: none; (Critical for drag interactions).
+
+Hide scrollbars for immersive feel.
+
+🏗 Phase 2: The "Game Manager" (State Machine)
+Objective: Orchestrate the user journey without routing. We use a single-page state machine for fluid transitions.
+
+File: app/components/shared/GameManager.tsx
+
+State Logic: Create a Context or State to manage:
+
+TypeScript
+
+type GameStage = 'INTRO' | 'MARKET' | 'BLENDER' | 'SIMMER' | 'BEEF_DROP' | 'RICE_CHECK' | 'REVEAL';
+Animation Spec: Use AnimatePresence with mode='wait'.
+
+Enter: x: 300, opacity: 0
+
+Center: x: 0, opacity: 1
+
+Exit: x: -300, opacity: 0
+
+Transition: type: "spring", stiffness: 260, damping: 20
+
+🛒 Phase 3: Act 1 - "The Market" (Drag & Drop)
+Objective: Gamify the gathering of ingredients.
+
+File: app/components/market/MiseEnPlace.tsx
+
+Data Structure:
+
+TypeScript
+
+const INGREDIENTS = [
+  { id: 'beef', label: 'Beef Cubes', icon: '🥩' },
+  { id: 'leaves', label: 'Cassava Leaves', icon: '🌿' },
+  { id: 'fish', label: 'Smoked Fish', icon: '🐟' },
+  // ... others
+]
+Interaction Details:
+
+Draggable: Wrap items in motion.div with drag and dragConstraints.
+
+Drop Zone: The "Bowl" component detects overlaps.
+
+Physics: When dropped, item moves to {x:0, y:0} relative to the bowl container and scales to 0.
+
+Vibe: Sound effect pop.mp3 plays on every successful drop.
+
+🌪 Phase 4: Act 2 - "The Virtual Blender"
+Objective: Simulate mechanical feedback.
+
+File: app/components/prep/VirtualBlender.tsx
+
+Component States:
+
+isBlending (boolean)
+
+progress (0-100)
+
+Animation Spec (The Shake): When isBlending === true, apply this variant to the blender container:
+
+TypeScript
+
+animate: {
+  x: [0, -2, 2, -2, 2, 0],
+  y: [0, -2, 2, -2, 2, 0],
+  transition: { repeat: Infinity, duration: 0.1 }
+}
+Haptics: Use navigator.vibrate([50]) in a loop while holding.
+
+🔥 Phase 5: Act 3 - "The Simmer" (Time & Heat)
+Objective: Manage the cooking variable (Heat).
+
+Files:
+
+app/components/cook/SimmerTimer.tsx
+
+app/components/cook/HeatSlider.tsx
+
+Logic:
+
+Heat Multiplier:
+
+Low Heat: Timer speed 1x.
+
+Simmer (Medium): Timer speed 1.5x (Optimal).
+
+High Heat: Timer speed 2.5x (Warning state).
+
+Visual Feedback: If High Heat, overlay a red pulsing vignette box-shadow: inset 0 0 50px #FF4500.
+
+Video Integration: Background <video> must handle the speed change. (Note: HTML5 video playbackRate can be controlled via ref).
+
+🥩 Phase 6: Act 3.5 - "The Beef Drop"
+Objective: Add ingredients to a boiling pot.
+
+File: app/components/cook/IngredientDrop.tsx
+
+Animation Spec:
+
+Constraint: Items constrained to top 50% of screen.
+
+Release: On dragEnd, check if Y > threshold (over the pot).
+
+Physics: If dropped over pot, animate y: 500 (fall down) and opacity: 0.
+
+Effect: Create a CSS ripple animation on the pot surface at the drop X coordinate.
+
+🍛 Phase 7: Act 4 - "The Grand Reveal"
+Objective: The reward state.
+
+File: app/components/serve/GrandReveal.tsx
+
+Interaction:
+
+Swipe Gesture: motion.div covering the screen (The Lid).
+
+Logic: drag="y", dragConstraints={{ top: -500, bottom: 0 }}.
+
+Trigger: If y < -200, trigger controls.start({ y: -1000 }) (Fly off screen).
+
+Success Events:
+
+Play angel_chorus.mp3.
+
+Fire confetti({ particleCount: 150, spread: 70 }).
+
+Fade in "Share" buttons.
+
+🧠 Phase 8: Intelligence & Utilities
+8.1 Smart Portions (PortionController.tsx):
+
+Input: servingSize (number).
+
+Output: Multiplies base ingredient quantities.
+
+Animation: Use framer-motion's animate value hook to scroll numbers.
+
+8.2 Kitchen Reliability (useWakeLock.ts):
+
+Effect: Call navigator.wakeLock.request('screen') on component mount.
+
+Cleanup: Release lock on unmount.
+
+8.3 Haptics (useHaptic.ts):
+
+Exports: triggerSuccess(), triggerWarning(), triggerTick().
+
+📱 Phase 9: PWA & Mobile Optimization
+File: public/manifest.json
+
+Manifest Config:
+
+display: "standalone"
+
+orientation: "portrait"
+
+theme_color: "#1EB53A"
+
+background_color: "#0F3B1A"
+
+Meta Viewport: viewport: { width: 'device-width', initialScale: 1, maximumScale: 1, userScalable: false } (Prevents zooming while double-tapping controls).
+
+📝 Cursor Instruction Prompts (Copy-Paste these into Chat)
+When building the Layout:
+
+"Reference the Design System in the Roadmap. Create a root layout that disables text selection and sets the default background to cassava-dark. Ensure Inter font is applied."
+
+When building the Blender:
+
+"Reference Phase 4. Implement the VirtualBlender using framer-motion. I need the shake animation to trigger only when isPressed is true. Connect the useSound hook for the blender noise."
+
+When building the Market:
+
+"Reference Phase 3. Create the drag-and-drop mechanics. Use AnimatePresence to remove items from the shelf list once they are successfully dropped into the bowl array."
