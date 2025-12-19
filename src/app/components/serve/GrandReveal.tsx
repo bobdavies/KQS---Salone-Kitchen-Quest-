@@ -10,13 +10,14 @@ import Image from "next/image";
 
 export default function GrandReveal() {
     const { theme } = useGame();
-    const { playSuccess, playSweep } = useAudio();
+    const { playSuccess, playSweep, playCelebrate } = useAudio();
     const [showContent, setShowContent] = useState(false);
     const [lidLifted, setLidLifted] = useState(false);
 
     useEffect(() => {
         if (lidLifted) {
             playSuccess();
+            playCelebrate();
             const timer = setTimeout(() => setShowContent(true), 1000);
 
             // Final Celebration Confetti

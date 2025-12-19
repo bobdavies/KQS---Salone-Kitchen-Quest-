@@ -14,6 +14,7 @@ export const useAudio = () => {
     // New sounds for cooking and prep
     const [playSimmer, { stop: stopSimmer }] = useSound("/sounds/boiling-water-sound-62556.mp3", { volume: 0.5, loop: true, interrupt: true });
     const [playSplash] = useSound("https://www.soundjay.com/nature/water-splash-1.mp3", { volume: 0.4 });
+    const [playCelebrate] = useSound("https://www.soundjay.com/human/applause-01.mp3", { volume: 0.4 });
 
     return {
         playHover,
@@ -25,6 +26,7 @@ export const useAudio = () => {
         stopBlender,
         playSimmer,
         stopSimmer,
-        playSplash
+        playSplash,
+        playCelebrate
     };
 };
