@@ -22,17 +22,28 @@ export default function IngredientCard({ ingredient, onDrop, onTap, onHoldComple
     const [holdProgress, setHoldProgress] = useState(0);
     const holdTimerRef = useRef<NodeJS.Timeout | null>(null);
     const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
+    const lastTapTimeRef = useRef<number>(0);
     const { playHover, playGlitch, playSuccess } = useAudio();
     const { theme, discoverLore, loreDiscovered } = useGame();
     const isDiscovered = loreDiscovered.includes(ingredient.id);
+
+    const handleTap = () => {
+        const now = Date.now();
+        const DOUBLE_TAP_TIMEOUT = 300;
+
+        if (now - lastTapTimeRef.current < DOUBLE_TAP_TIMEOUT) {
+            // Double tap detected
+            onTap(ingredient.id);
+        }
+        lastTapTimeRef.current = now;
+    };
 
     const startHold = () => {
         if (window.innerWidth >= 768) return; // Only for mobile
 
         setHoldProgress(0);
         const startTime = Date.now();
-        const duration = 2000; // User asked for 3s, but 2s feels better for UX. Let's aim for 3s as requested.
-        const targetDuration = 3000;
+        const targetDuration = 1500; // User asked for 1.5s
 
         holdTimerRef.current = setTimeout(() => {
             playSuccess();
@@ -43,7 +54,7 @@ export default function IngredientCard({ ingredient, onDrop, onTap, onHoldComple
         progressIntervalRef.current = setInterval(() => {
             const elapsed = Date.now() - startTime;
             setHoldProgress(Math.min((elapsed / targetDuration) * 100, 100));
-        }, 50);
+        }, 30);
     };
 
     const stopHold = () => {
@@ -61,7 +72,7 @@ export default function IngredientCard({ ingredient, onDrop, onTap, onHoldComple
             drag
             dragSnapToOrigin
             dragElastic={0.4}
-            onTap={() => onTap(ingredient.id)}
+            onTap={handleTap}
             onPointerDown={startHold}
             onPointerUp={stopHold}
             onPointerLeave={stopHold}
