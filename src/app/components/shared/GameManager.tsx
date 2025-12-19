@@ -52,7 +52,7 @@ export default function GameManager() {
     };
 
     return (
-        <main className="relative h-full w-full bg-hearth-void overflow-hidden">
+        <main className="relative w-full min-h-[100dvh] bg-hearth-void overflow-x-hidden">
             <AnimatePresence mode="wait">
                 <motion.div
                     key={currentStage}
@@ -61,7 +61,7 @@ export default function GameManager() {
                     animate="animate"
                     exit="exit"
                     transition={transition}
-                    className="h-full w-full"
+                    className="w-full min-h-full"
                 >
                     {renderStage()}
                 </motion.div>

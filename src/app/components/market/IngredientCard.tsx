@@ -42,7 +42,7 @@ export default function IngredientCard({ ingredient, onDrop }: IngredientCardPro
                 transition: { rotate: { repeat: Infinity, duration: 0.2 } }
             }}
             whileDrag={{ scale: 1.3, zIndex: 100, rotate: 5 }}
-            className={`expert-card relative cursor-grab active:cursor-grabbing w-32 h-32 md:w-40 md:h-40 flex flex-col items-center justify-center rounded-[40px] transition-all duration-300 ${isDragging ? "drag-proxy scale-110" : ""
+            className={`expert-card relative cursor-grab active:cursor-grabbing w-28 h-28 md:w-40 md:h-40 flex flex-col items-center justify-center rounded-[32px] md:rounded-[40px] transition-all duration-300 ${isDragging ? "drag-proxy scale-110" : ""
                 }`}
         >
             {/* Discovery Ornament */}

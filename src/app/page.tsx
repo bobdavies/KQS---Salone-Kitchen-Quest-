@@ -2,7 +2,7 @@ import GameManager from "./components/shared/GameManager";
 
 export default function Home() {
   return (
-    <div className="h-screen w-screen overflow-hidden bg-hearth-void text-salone-white font-inter antialiased">
+    <div className="w-full min-h-full flex flex-col items-center justify-center">
       <GameManager />
     </div>
   );

@@ -40,9 +40,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} ${playfair.variable} ${ubuntu.variable} bg-hearth-void overflow-hidden selection:bg-heritage-terracotta selection:text-white`}>
+      <body className={`${inter.className} ${playfair.variable} ${ubuntu.variable} bg-hearth-void overflow-x-hidden selection:bg-heritage-terracotta selection:text-white`}>
         <GameProvider>
-          <div className="h-screen w-screen overflow-hidden bg-hearth-void text-salone-white font-inter antialiased landscape:max-h-[-webkit-fill-available]">
+          <div className="min-h-[100dvh] w-full bg-hearth-void text-salone-white font-inter antialiased overflow-x-hidden flex flex-col">
             {/* Global Persistence Layer: Heritage Atmosphere */}
             <HeritageAtmosphere />
 
@@ -54,7 +54,9 @@ export default function RootLayout({
               <div className="absolute bottom-0 right-0 w-32 h-32 border-b-2 border-r-2 border-heritage-terracotta/10 rounded-br-3xl" />
             </div>
 
-            {children}
+            <main className="flex-grow flex flex-col items-center justify-center relative z-10">
+              {children}
+            </main>
           </div>
         </GameProvider>
       </body>

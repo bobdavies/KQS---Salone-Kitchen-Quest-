@@ -70,7 +70,7 @@ export default function MiseEnPlace() {
                     opacity: [1, 1, 0],
                 } : {}}
                 transition={{ duration: 2, ease: "easeIn" }}
-                className="relative h-full w-full flex flex-col items-center justify-between p-6 md:p-12 bg-background overflow-hidden max-h-screen"
+                className="relative min-h-[100dvh] w-full flex flex-col items-center justify-start p-4 md:p-12 bg-background overflow-x-hidden pt-12 md:pt-24 pb-32 md:pb-12"
             >
                 {/* Background Atmosphere */}
                 <div className="absolute inset-0 pointer-events-none opacity-30">
@@ -78,7 +78,7 @@ export default function MiseEnPlace() {
                 </div>
 
                 {/* Header Section */}
-                <div className="relative z-10 w-full max-w-7xl flex flex-col md:flex-row justify-between items-center gap-8">
+                <div className="relative z-10 w-full max-w-7xl flex flex-col md:flex-row justify-between items-center gap-12 mb-12">
                     <motion.div
                         initial={{ opacity: 0, x: -50 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -88,7 +88,7 @@ export default function MiseEnPlace() {
                             <ShoppingBag className="w-5 h-5 text-accent animate-pulse" />
                             <span className="text-[10px] font-black tracking-[0.5em] text-foreground/40 uppercase">Hearth Phase: 01</span>
                         </div>
-                        <h2 className="text-6xl md:text-8xl lg:text-9xl font-ubuntu font-bold text-foreground hearth-glow-text leading-none">
+                        <h2 className="text-[12vw] md:text-8xl lg:text-9xl font-ubuntu font-bold text-foreground hearth-glow-text leading-[0.9]">
                             Village <br />
                             <span className="vibrant-gradient italic">Market</span>
                         </h2>
@@ -117,11 +117,11 @@ export default function MiseEnPlace() {
                 </div>
 
                 {/* Central Market Shelf */}
-                <div className="relative z-10 w-full max-w-7xl flex flex-col lg:flex-row gap-8 items-center justify-center py-12">
+                <div className="relative z-10 w-full max-w-7xl flex flex-col lg:flex-row gap-12 items-center justify-center py-8">
                     <div className="flex-1 overflow-hidden">
                         <motion.div
                             layout
-                            className="flex flex-wrap items-center justify-center gap-6 md:gap-10"
+                            className="flex flex-wrap items-center justify-center gap-4 md:gap-10"
                         >
                             <AnimatePresence mode="popLayout">
                                 {availableIngredients.map((ing, i) => (
@@ -178,7 +178,7 @@ export default function MiseEnPlace() {
                 </div>
 
                 {/* Interaction Footer */}
-                <div className="relative z-10 w-full max-w-7xl flex flex-col md:flex-row items-center justify-between gap-12 pb-8">
+                <div className="relative z-20 w-full max-w-7xl flex flex-col md:flex-row items-center justify-between gap-12 pb-12 mt-auto">
                     <div className="flex flex-col items-center md:items-start text-center md:text-left">
                         <div className="flex items-center gap-4 mb-2">
                             <Sprout className="w-5 h-5 text-accent animate-bounce" />
