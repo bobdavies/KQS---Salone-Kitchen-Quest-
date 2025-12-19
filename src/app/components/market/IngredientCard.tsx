@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { Ingredient } from "@/lib/constants";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Info, Sparkles } from "lucide-react";
 import { useAudio } from "@/app/hooks/useAudio";
 import { useGame } from "@/lib/context";
@@ -11,16 +11,50 @@ interface IngredientCardProps {
     ingredient: Ingredient;
     onDrop: (id: string, x: number, y: number) => void;
     onTap: (id: string) => void;
+    onHoldComplete?: (id: string) => void;
     onDragStart?: () => void;
     onDragEnd?: () => void;
 }
 
 
-export default function IngredientCard({ ingredient, onDrop, onTap, onDragStart, onDragEnd }: IngredientCardProps) {
+export default function IngredientCard({ ingredient, onDrop, onTap, onHoldComplete, onDragStart, onDragEnd }: IngredientCardProps) {
     const [isDragging, setIsDragging] = useState(false);
-    const { playHover, playGlitch } = useAudio();
+    const [holdProgress, setHoldProgress] = useState(0);
+    const holdTimerRef = useRef<NodeJS.Timeout | null>(null);
+    const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
+    const { playHover, playGlitch, playSuccess } = useAudio();
     const { theme, discoverLore, loreDiscovered } = useGame();
     const isDiscovered = loreDiscovered.includes(ingredient.id);
+
+    const startHold = () => {
+        if (window.innerWidth >= 768) return; // Only for mobile
+
+        setHoldProgress(0);
+        const startTime = Date.now();
+        const duration = 2000; // User asked for 3s, but 2s feels better for UX. Let's aim for 3s as requested.
+        const targetDuration = 3000;
+
+        holdTimerRef.current = setTimeout(() => {
+            playSuccess();
+            onHoldComplete?.(ingredient.id);
+            stopHold();
+        }, targetDuration);
+
+        progressIntervalRef.current = setInterval(() => {
+            const elapsed = Date.now() - startTime;
+            setHoldProgress(Math.min((elapsed / targetDuration) * 100, 100));
+        }, 50);
+    };
+
+    const stopHold = () => {
+        if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
+        if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+        setHoldProgress(0);
+    };
+
+    useEffect(() => {
+        return () => stopHold();
+    }, []);
 
     return (
         <motion.div
@@ -28,6 +62,9 @@ export default function IngredientCard({ ingredient, onDrop, onTap, onDragStart,
             dragSnapToOrigin
             dragElastic={0.4}
             onTap={() => onTap(ingredient.id)}
+            onPointerDown={startHold}
+            onPointerUp={stopHold}
+            onPointerLeave={stopHold}
             onHoverStart={() => {
                 if (window.innerWidth >= 768) {
                     playHover();
@@ -35,6 +72,7 @@ export default function IngredientCard({ ingredient, onDrop, onTap, onDragStart,
                 }
             }}
             onDragStart={() => {
+                stopHold(); // Stop hold if drag starts
                 setIsDragging(true);
                 playGlitch();
                 onDragStart?.();
@@ -53,6 +91,24 @@ export default function IngredientCard({ ingredient, onDrop, onTap, onDragStart,
             className={`expert-card relative cursor-grab active:cursor-grabbing w-24 h-24 md:w-36 md:h-36 lg:w-40 lg:h-40 flex flex-col items-center justify-center rounded-[28px] md:rounded-[40px] transition-all duration-300 ${isDragging ? "drag-proxy scale-110" : ""
                 }`}
         >
+            {/* Hold Progress Ring (Mobile only) */}
+            {holdProgress > 0 && (
+                <svg className="absolute inset-0 w-full h-full -rotate-90 pointer-events-none z-20">
+                    <circle
+                        cx="50%"
+                        cy="50%"
+                        r="45%"
+                        fill="none"
+                        stroke="var(--accent)"
+                        strokeWidth="4"
+                        strokeDasharray="283"
+                        strokeDashoffset={283 - (283 * holdProgress) / 100}
+                        strokeLinecap="round"
+                        className="transition-all duration-100 ease-linear opacity-60"
+                    />
+                </svg>
+            )}
+
             {/* Discovery Ornament */}
             <AnimatePresence>
                 {!isDiscovered && (

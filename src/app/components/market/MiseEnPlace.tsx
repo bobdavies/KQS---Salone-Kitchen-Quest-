@@ -103,6 +103,17 @@ export default function MiseEnPlace() {
                             Village <br />
                             <span className="vibrant-gradient italic">Market</span>
                         </h2>
+                        {/* Mobile Hint */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 1 }}
+                            className="mt-4 md:hidden text-[10px] font-black text-accent/60 uppercase tracking-[0.2em] flex flex-col gap-1 items-center"
+                        >
+                            <span>Tap to see Story</span>
+                            <span className="opacity-40">•</span>
+                            <span>Hold 3s to Collect</span>
+                        </motion.div>
                     </motion.div>
 
                     {/* Discovery Status / Lore Progress */}
@@ -149,6 +160,7 @@ export default function MiseEnPlace() {
                                             ingredient={ing}
                                             onDrop={handleDrop}
                                             onTap={handleTapOrClick}
+                                            onHoldComplete={(id) => addIngredient(id)}
                                             onDragStart={() => setIsDraggingAny(true)}
                                             onDragEnd={() => setIsDraggingAny(false)}
                                         />
