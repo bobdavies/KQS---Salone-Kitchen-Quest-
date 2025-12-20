@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useGame } from "@/lib/context";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAudio } from "@/app/hooks/useAudio";
@@ -42,7 +42,7 @@ export default function CookingStage() {
 
         const interval = setInterval(() => {
             setProgress((prev) => {
-                const next = prev + (heat / 100) * 0.5;
+                const next = prev + (heat / 100) * 0.8;
                 if (next >= 100) {
                     playSuccess();
                     setIsComplete(true);
@@ -58,9 +58,12 @@ export default function CookingStage() {
         };
     }, [isComplete, heat, playSuccess, vibrateLight]);
 
+    const hasTriggeredNext = useRef(false);
+
     useEffect(() => {
-        if (isComplete) {
-            const timer = setTimeout(nextStage, 2500);
+        if (isComplete && !hasTriggeredNext.current) {
+            hasTriggeredNext.current = true;
+            const timer = setTimeout(nextStage, 150);
             return () => clearTimeout(timer);
         }
     }, [isComplete, nextStage]);
@@ -82,11 +85,11 @@ export default function CookingStage() {
                     animate={{ opacity: 1, y: 0 }}
                     className="text-center w-full"
                 >
-                    <div className="flex items-center gap-3 mb-4 justify-center">
+                    <div className="flex items-center gap-3 mb-2 md:mb-4 justify-center">
                         <Flame className="w-5 h-5 text-accent animate-pulse" />
                         <span className="text-[10px] font-black tracking-[0.5em] text-foreground/40 uppercase">Hearth Phase: Final Synthesis</span>
                     </div>
-                    <h2 className="text-[10vw] md:text-8xl lg:text-[10rem] font-ubuntu font-bold text-foreground leading-[0.9] hearth-glow-text mb-8">
+                    <h2 className="text-[10vw] md:text-8xl lg:text-[10rem] font-ubuntu font-bold text-foreground leading-[0.9] hearth-glow-text mb-4 md:mb-8">
                         The Heart <br />
                         <span className="vibrant-gradient italic">of the Home</span>
                     </h2>

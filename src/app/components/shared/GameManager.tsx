@@ -20,9 +20,9 @@ const slideVariants = {
 };
 
 const transition: any = {
-    type: "spring",
-    stiffness: 100,
-    damping: 20,
+    type: "tween",
+    ease: "circOut",
+    duration: 0.25,
 };
 
 export default function GameManager() {

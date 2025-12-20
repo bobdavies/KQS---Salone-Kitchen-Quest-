@@ -18,6 +18,7 @@ export default function MiseEnPlace() {
     const [isDraggingAny, setIsDraggingAny] = useState(false);
     const { playSuccess, playSweep, playHover } = useAudio();
     const bowlRef = useRef<HTMLDivElement>(null);
+    const hasTriggeredNext = useRef(false);
 
     const availableIngredients = INGREDIENTS.filter(
         (ing) => !ingredientsCollected.includes(ing.id)
@@ -56,11 +57,14 @@ export default function MiseEnPlace() {
             const vortexTimer = setTimeout(() => {
                 setIsTransitioning(true);
                 playSweep();
-            }, 1000);
+            }, 100);
 
             const transitionTimer = setTimeout(() => {
-                nextStage();
-            }, 3000);
+                if (!hasTriggeredNext.current) {
+                    hasTriggeredNext.current = true;
+                    nextStage();
+                }
+            }, 250);
 
             return () => {
                 clearTimeout(vortexTimer);
@@ -210,7 +214,7 @@ export default function MiseEnPlace() {
                 <div className="relative z-20 w-full max-w-7xl flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12 pb-8 md:pb-12 mt-4 md:mt-auto">
                     <div className="flex flex-col items-center md:items-start text-center md:text-left">
                         <div className="flex items-center gap-4 mb-2">
-                            <Sprout className="w-5 h-5 text-accent animate-bounce" />
+                            {/*<Sprout className="w-5 h-5 text-accent animate-bounce" />*/}
                             <span className="text-[10px] font-black text-accent tracking-[0.5em] uppercase">The First Rule</span>
                         </div>
                         <p className="max-w-xs text-xs text-foreground/40 font-inter leading-relaxed italic">

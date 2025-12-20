@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGame } from "@/lib/context";
 import { useAudio } from "@/app/hooks/useAudio";
@@ -21,6 +21,7 @@ export default function IngredientDrop() {
     const [hasStartedAudio, setHasStartedAudio] = useState(false);
     const [splashes, setSplashes] = useState<{ id: number, x: number, y: number }[]>([]);
     const { playSplash, playSimmer, stopSimmer, playSuccess } = useAudio();
+    const hasTriggeredNext = useRef(false);
     const isComplete = droppedCount === INITIAL_CUBES.length;
 
     const ensureAudio = useCallback(() => {
@@ -71,8 +72,9 @@ export default function IngredientDrop() {
     }, [droppedCount, playSplash, playSuccess]);
 
     useEffect(() => {
-        if (isComplete) {
-            const timer = setTimeout(nextStage, 2500);
+        if (isComplete && !hasTriggeredNext.current) {
+            hasTriggeredNext.current = true;
+            const timer = setTimeout(nextStage, 150);
             return () => clearTimeout(timer);
         }
     }, [isComplete, nextStage]);

@@ -19,6 +19,7 @@ export default function VirtualBlender() {
     const { playBlender, stopBlender, playSuccess } = useAudio();
 
     const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const hasTriggeredNext = useRef(false);
     const [hasStartedAudio, setHasStartedAudio] = useState(false);
 
     const triggerBlender = useCallback(() => {
@@ -77,8 +78,9 @@ export default function VirtualBlender() {
     }, [isBlending, isComplete, controls, triggerBlender, triggerSuccess, playBlender, stopBlender, stopVibrate]);
 
     useEffect(() => {
-        if (isComplete) {
-            const timer = setTimeout(nextStage, 2500);
+        if (isComplete && !hasTriggeredNext.current) {
+            hasTriggeredNext.current = true;
+            const timer = setTimeout(nextStage, 150);
             return () => clearTimeout(timer);
         }
     }, [isComplete, nextStage]);
@@ -206,11 +208,11 @@ export default function VirtualBlender() {
                             </div>
                         </div>
 
-                        {/* Interaction Button */}
                         <motion.button
                             onPointerDown={startBlending}
                             onPointerUp={stopBlending}
                             onPointerLeave={stopBlending}
+                            onPointerCancel={stopBlending}
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className={`relative w-48 h-48 md:w-64 md:h-64 rounded-full flex flex-col items-center justify-center gap-4 transition-all duration-700 shadow-xl md:shadow-2xl overflow-hidden touch-none select-none

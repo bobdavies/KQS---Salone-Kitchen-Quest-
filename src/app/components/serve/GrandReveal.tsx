@@ -18,7 +18,7 @@ export default function GrandReveal() {
         if (lidLifted) {
             playSuccess();
             playCelebrate();
-            const timer = setTimeout(() => setShowContent(true), 1000);
+            const timer = setTimeout(() => setShowContent(true), 100);
 
             // Final Celebration Confetti
             const duration = 4 * 1000;
@@ -173,8 +173,8 @@ export default function GrandReveal() {
                                     transition={{ delay: 0.8 }}
                                     className="space-y-4 text-center px-4"
                                 >
-                                    <h3 className="text-accent font-bold text-3xl md:text-7xl font-ubuntu tracking-[0.3em] md:tracking-[0.5em] uppercase hearth-glow-text">
-                                        Heritage Grains
+                                    <h3 className="text-accent font-extrabold text-2xl md:text-5xl font-ubuntu tracking-[0.05em] md:tracking-[0.05em] uppercase hearth-glow-text">
+                                        Here's your Prepared Cassava Leaf and Rice
                                     </h3>
                                     <p className="text-foreground/40 text-sm md:text-2xl font-inter tracking-wide italic leading-relaxed max-w-xl mx-auto">
                                         &quot;A symphony of tradition and soul, served with the eternal warmth of the hearth.&quot;
@@ -211,7 +211,7 @@ export default function GrandReveal() {
                                 onClick={() => window.location.reload()}
                                 className="px-10 md:px-24 py-6 md:py-8 expert-card border-2 border-accent/40 text-foreground font-black text-lg md:text-3xl font-ubuntu tracking-[0.3em] md:tracking-[0.4em] rounded-[40px] md:rounded-[50px] shadow-xl hover:bg-accent/10 transition-all flex items-center gap-4 md:gap-6 group"
                             >
-                                <PlayCircle className="w-6 h-6 md:w-8 md:h-8 group-hover:rotate-90 transition-transform duration-500" />
+                                {/*<PlayCircle className="w-6 h-6 md:w-8 md:h-8 group-hover:rotate-90 transition-transform duration-500" />*/}
                                 RETURN TO HEARTH
                             </motion.button>
                         </motion.div>

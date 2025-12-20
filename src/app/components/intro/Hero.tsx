@@ -75,7 +75,7 @@ export default function Hero() {
                                     key={i}
                                     initial={{ opacity: 0, y: 50 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.5 + i * 0.2 }}
+                                    transition={{ delay: 0.2 + i * 0.1 }}
                                     className="text-[14vw] md:text-[10rem] lg:text-[14rem] font-ubuntu font-bold text-foreground hearth-glow-text leading-[0.8] tracking-tighter"
                                 >
                                     {word}
@@ -85,7 +85,7 @@ export default function Hero() {
                         <motion.span
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 1 }}
+                            transition={{ delay: 0.4 }}
                             className="text-[10vw] md:text-8xl lg:text-[9rem] font-ubuntu font-bold mt-[-0.1em] vibrant-gradient italic"
                         >
                             & RICE
@@ -97,7 +97,7 @@ export default function Hero() {
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ delay: 1.5 }}
+                    transition={{ delay: 0.6 }}
                     className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 mb-12 md:mb-20"
                 >
                     <div className="flex items-center gap-4 group">
@@ -135,7 +135,7 @@ export default function Hero() {
                     className="group relative w-full max-w-[320px] md:max-w-none md:w-auto px-12 md:px-20 py-6 md:py-10 bg-accent text-white rounded-[32px] md:rounded-[40px] font-black text-xl md:text-2xl tracking-[0.2em] overflow-hidden shadow-2xl border-2 border-white/20"
                 >
                     <span className="relative z-10 flex items-center justify-center gap-6">
-                        <Sparkles className="w-8 h-8 md:w-10 md:h-10" />
+                        {/*<Sparkles className="w-8 h-8 md:w-10 md:h-10" />*/}
                         BEGIN FEAST
                     </span>
                 </motion.button>

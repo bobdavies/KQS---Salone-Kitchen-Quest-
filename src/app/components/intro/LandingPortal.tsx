@@ -3,7 +3,7 @@
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { useGame } from "@/lib/context";
 import { useAudio } from "@/app/hooks/useAudio";
-import { Sparkles, Sword, Map, ChefHat, Flame, Crosshair } from "lucide-react";
+import { Sparkles, Sword, Map, ChefHat, Flame, Crosshair, Home } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 
 export default function LandingPortal() {
@@ -29,7 +29,7 @@ export default function LandingPortal() {
         initial: { opacity: 0 },
         animate: {
             opacity: 1,
-            transition: { staggerChildren: 0.1, delayChildren: 0.2 }
+            transition: { staggerChildren: 0.05, delayChildren: 0.1 }
         }
     };
 
@@ -39,7 +39,7 @@ export default function LandingPortal() {
             y: 0,
             opacity: 1,
             filter: "blur(0px)",
-            transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+            transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] }
         }
     };
 
@@ -108,20 +108,20 @@ export default function LandingPortal() {
                         }}
                         className="absolute inset-[-30px] md:inset-[-60px] border border-accent/10 rounded-full"
                     />
-                    <div className="w-32 h-32 md:w-56 md:h-56 rounded-[32px] md:rounded-[50px] expert-card border-accent/30 flex items-center justify-center relative overflow-hidden group shadow-2xl">
+                    {/*<div className="w-32 h-32 md:w-56 md:h-56 rounded-[32px] md:rounded-[50px] expert-card border-accent/30 flex items-center justify-center relative overflow-hidden group shadow-2xl">
                         <div className="absolute inset-0 bg-accent/5 group-hover:bg-accent/10 transition-colors" />
-                        <Flame className="w-16 h-16 md:w-28 md:h-28 text-accent drop-shadow-[0_0_20px_var(--accent)]" />
-                        <motion.div
+                        {/*<No className="w-16 h-16 md:w-28 md:h-28 text-accent drop-shadow-[0_0_20px_var(--accent)]" />*/}
+                    {/*</motion.div><motion.div
                             animate={{ opacity: [0.1, 0.2, 0.1] }}
                             transition={{ duration: 4, repeat: Infinity }}
                             className="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--accent)_0%,transparent_60%)]"
                         />
-                    </div>
+                    </div>*/}
                 </motion.div>
 
                 {/* Fluid Typography Header */}
                 <motion.div variants={itemVariants} className="mb-2 md:mb-6">
-                    <h1 className="text-[18vw] md:text-[clamp(8rem,15vw,16rem)] font-ubuntu font-bold text-foreground tracking-[-0.08em] leading-none hearth-glow-text">
+                    <h1 className="text-[32vw] md:text-[clamp(8rem,15vw,16rem)] font-ubuntu font-bold text-foreground tracking-[-0.08em] leading-none hearth-glow-text">
                         KQS
                     </h1>
                 </motion.div>
@@ -160,7 +160,7 @@ export default function LandingPortal() {
                         className="group relative w-full max-w-[320px] md:max-w-none md:w-auto px-8 md:px-32 py-6 md:py-14 bg-accent text-white rounded-full font-black text-lg md:text-4xl tracking-[0.2em] md:tracking-[0.3em] overflow-hidden border-2 border-white/20 shadow-2xl transition-all"
                     >
                         <span className="relative z-10 flex items-center justify-center gap-6 md:gap-8">
-                            <Crosshair className="w-6 h-6 md:w-10 md:h-10 group-hover:rotate-90 transition-transform duration-700" />
+                            {/*<Crosshair className="w-6 h-6 md:w-10 md:h-10 group-hover:rotate-90 transition-transform duration-700" />*/}
                             BEGIN QUEST
                         </span>
                         <motion.div
@@ -177,16 +177,16 @@ export default function LandingPortal() {
                     className="mt-16 md:mt-32 grid grid-cols-3 gap-8 md:gap-32 opacity-20"
                 >
                     <div className="flex flex-col items-center gap-2">
-                        <Map className="w-5 h-5 md:w-8 md:h-8" />
-                        <span className="text-[7px] md:text-[9px] font-black tracking-widest uppercase">Explore</span>
+                        {/*<Map className="w-5 h-5 md:w-8 md:h-8" />*/}
+                        <span className="text-[12px] md:text-[16px] font-black tracking-widest uppercase">Explore</span>
                     </div>
                     <div className="flex flex-col items-center gap-2">
-                        <ChefHat className="w-5 h-5 md:w-8 md:h-8" />
-                        <span className="text-[7px] md:text-[9px] font-black tracking-widest uppercase">Master</span>
+                        {/*<ChefHat className="w-5 h-5 md:w-8 md:h-8" />*/}
+                        <span className="text-[12px] md:text-[16px] font-black tracking-widest uppercase">Master</span>
                     </div>
                     <div className="flex flex-col items-center gap-2">
-                        <Sparkles className="w-5 h-5 md:w-8 md:h-8" />
-                        <span className="text-[7px] md:text-[9px] font-black tracking-widest uppercase">Legacy</span>
+                        {/*<Sparkles className="w-5 h-5 md:w-8 md:h-8" />*/}
+                        <span className="text-[12px] md:text-[16px] font-black tracking-widest uppercase">Legacy</span>
                     </div>
                 </motion.div>
             </motion.div>

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Hand, MousePointer2, Fingerprint } from "lucide-react";
 
 interface GhostHintProps {
-    type: "drag" | "hold" | "swipe";
+    type: "drag" | "hold" | "swipe" | "tap";
     idleTime?: number;
 }
 
@@ -50,6 +50,11 @@ export default function GhostHint({ type, idleTime = 4000 }: GhostHintProps) {
         swipe: {
             initial: { y: 50, opacity: 0 },
             animate: { y: -50, opacity: [0, 1, 1, 0] },
+            icon: MousePointer2
+        },
+        tap: {
+            initial: { scale: 1, opacity: 0 },
+            animate: { scale: [1, 1.2, 0.9, 1], opacity: [0, 1, 1, 0] },
             icon: MousePointer2
         }
     };
